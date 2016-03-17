@@ -64,6 +64,11 @@ public class Board {
     }
     public int heuristic1() // returns the estimated distance from current board to final state using heuristic1
     {
+        return calcColorsLeft() - 1;
+    }
+
+    public int heuristic2() // returns the estimated distance from current board to final state using heuristic2
+    {
         for(int i=0; i<6; i++){
             six[i] = 0;
         }
@@ -75,11 +80,6 @@ public class Board {
             }
         }
         return 0;
-    }
-
-    public int heuristic2() // returns the estimated distance from current board to final state using heuristic2
-    {
-        return calcColorsLeft() - 1;
     }
 
     public boolean isGoal() // is this board the goal board? i.e., all color same. 
@@ -95,15 +95,18 @@ public class Board {
     }
 
     public int calcColorsLeft(){
+        if(board[0][0]==0){
+            return 6;
+        }
         int count = 0;
         int[] temp = new int[6];
         for (int i=0; i<6; i++)
             temp[i] = 0;
         for(int i=0; i<n; i++){
             for(int j=0; j<n; j++){
-                if(i==j){
-                    temp[board[i][j]-1]++;
-                }
+                //if(i==j){
+                    temp[board[i][j]-1] = temp[board[i][j]-1]  + 1;
+                //}
             }
         }
         for (int i=0; i<6; i++){
@@ -177,12 +180,14 @@ public class Board {
                 childBoard.startFlood(i);
             }
             ba.add(childBoard);
-            ba.get(i-1).printBoard();
-            BoardGraph bg = new BoardGraph(ba.get(i-1).getBoard());
-            int x = bg.connectedComp();
-            System.out.println(x + "is the # of conn comp");
+            if(D.p) ba.get(i-1).printBoard();
+          //  int[][] boardGraphColors = new int[n][n];
+           // boardGraphColors = ba.get(i-1).getBoard();
+           // BoardGraph bg = new BoardGraph(boardGraphColors);
+           // int x = bg.connectedComp();
+            //if(D.p) System.out.println(x + "is the # of conn comp of board# "+ i);
         }
-        return null;
+        return ba;
     }
 
 

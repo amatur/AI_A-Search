@@ -41,12 +41,12 @@ public class Solver
 		{
 			nodesExpanded++;
 			Board node = PQ.poll();
-			//System.out.println("Pop: "+node);
+			System.err.println("Pop: "+node);
 			
 			if(node.isGoal())
 			{
 				minMove = node.get_g();
-				//System.out.println("Goal: "+node.toString());
+				System.out.println("Goal: "+node.toString());
 				solution = new ArrayList<Board>();
 				//populate solution arraylist with the board sequence from initial to goal
 				return;
@@ -54,7 +54,7 @@ public class Solver
 			
 			ArrayList<Board> neighbors = node.neighbors();
 			
-			for(int i=0;i<neighbors.size();i++)
+			for(int i=0; i<neighbors.size(); i++)
 			{
 				PQ.add(neighbors.get(i));
 				//System.out.println(neighbors.get(i));
@@ -100,18 +100,18 @@ public class Solver
 					colors[i][j] = in.nextInt();
 
 			Board initial = new Board(colors,null,0);
-			//System.out.println(initial.toString());
+			System.err.println(initial.toString());
 
-                        initial.neighbors();
+ //                       initial.neighbors();
+ //                       System.out.println(initial.calcColorsLeft());
                         
-                        
-			//Solver solver = new Solver(initial);
+			Solver solver = new Solver(initial);
 	
-                        //System.out.println("Nodes Expanded: "+ solver.nodesExpanded);
-			//System.out.println("Minimum number of moves = " + solver.moves());
-			//ArrayList<Board> solution = solver.solution();
-			//for (int i=0;i<solution.size();i++)
-			//	System.out.println(solution.get(i));
+                        System.out.println("Nodes Expanded: "+ solver.nodesExpanded);
+			System.out.println("Minimum number of moves = " + solver.moves());
+			ArrayList<Board> solution = solver.solution();
+			for (int i=0;i<solution.size();i++)
+				System.out.println(solution.get(i));
 			//for bonus - show_result_in_gui(solution);
 		}
 	}
