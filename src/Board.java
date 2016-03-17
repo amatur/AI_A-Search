@@ -14,8 +14,12 @@ public class Board {
         this.n = board.length;
         this.g = g;
         //printBoard();
-        flooded = new boolean[n][n];
-        initFlooding();
+        if(parent==null){
+            flooded = new boolean[n][n];
+            initFlooding();
+        }else{
+            flooded = parent.getCopyFlooded();
+        }
 //        board = new int[n][n];
 //        if(D.p) System.out.println(n + " col");
 //        for (int i = 0; i < n; i++) {
@@ -26,12 +30,20 @@ public class Board {
     }
     public String toString() 
 	{
-		String str="\ng: "+g+" h:"+heuristic1()+"\n";
+		String str="\ng: "+g+" h:"+heuristic1()+ " col left: "+ calcColorsLeft()+"\n";
 		for (int i=0; i<board.length;i++)
 		{
 			for(int j=0;j<board[i].length;j++)
 			{
 				str += (board[i][j]+" ");
+			}
+			str +="\n";
+		}
+                for (int i=0; i<board.length;i++)
+		{
+			for(int j=0;j<board[i].length;j++)
+			{
+				str += (flooded[i][j]+" ");
 			}
 			str +="\n";
 		}
@@ -101,16 +113,16 @@ public class Board {
         int count = 0;
         int[] temp = new int[6];
         for (int i=0; i<6; i++)
-            temp[i] = 0;
+            six[i] = 0;
         for(int i=0; i<n; i++){
             for(int j=0; j<n; j++){
                 //if(i==j){
-                    temp[board[i][j]-1] = temp[board[i][j]-1]  + 1;
+                    six[board[i][j]-1] = six[board[i][j]-1]  + 1;
                 //}
             }
         }
         for (int i=0; i<6; i++){
-            if(temp[i]!=0)
+            if(six[i]!=0)
                 count++;
         }
         colorsLeft  = count;
@@ -162,6 +174,7 @@ public class Board {
                 }
             }
         }
+        
         //find new candidates to flood (neighbours of already flooded)
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board.length; col++) {
@@ -170,21 +183,31 @@ public class Board {
                 }
             }
         }
+
     }
     public ArrayList<Board> neighbors() // all neighboring boards
     {
         ArrayList<Board> ba = new ArrayList<Board>();
-        for(int i=1; i<=6; i++){
-            Board childBoard = new Board(getCopy(board), this, this.g+1); //neighbor's cost is 1 more
-            if(childBoard.getBoard()[0][0]!=i){
-                childBoard.startFlood(i);
+        int prevColLeft = calcColorsLeft(); //to update six color availability list
+        //BoardGraph bg = new BoardGraph(getCopy(board));
+        //int prevConnC =  bg.connectedComp();
+        
+        for (int i = 0; i < 6; i++) {
+            if (six[i] != 0) {
+                Board childBoard = new Board(getCopy(board), this, this.g + 1); //neighbor's cost is 1 more
+                
+                if (childBoard.getBoard()[0][0] != i + 1) {
+                    childBoard.startFlood(i + 1);
+                }
+                ba.add(childBoard);
+                //if (D.p) {
+//                    System.err.println(ba.get(i));
+                //}
             }
-            ba.add(childBoard);
-            if(D.p) ba.get(i-1).printBoard();
           //  int[][] boardGraphColors = new int[n][n];
-           // boardGraphColors = ba.get(i-1).getBoard();
-           // BoardGraph bg = new BoardGraph(boardGraphColors);
-           // int x = bg.connectedComp();
+            // boardGraphColors = ba.get(i-1).getBoard();
+            // BoardGraph bg = new BoardGraph(boardGraphColors);
+            // int x = bg.connectedComp();
             //if(D.p) System.out.println(x + "is the # of conn comp of board# "+ i);
         }
         return ba;
@@ -209,6 +232,15 @@ public class Board {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 nxtBoard[i][j] = board[i][j];
+            }
+        }
+        return nxtBoard;
+    }
+    public boolean[][] getCopyFlooded() {
+        boolean[][] nxtBoard = new boolean[board.length][board[0].length];
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                nxtBoard[i][j] = flooded[i][j];
             }
         }
         return nxtBoard;
@@ -250,5 +282,5 @@ public class Board {
     private int n;
     private int moves; //moves from initial state??
     private int[] six = new int[6];
-    private int colorsLeft = 6;
+    private int colorsLeft;
 }

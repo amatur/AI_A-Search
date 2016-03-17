@@ -28,6 +28,15 @@ public class Solver
 	}
         
 	public int nodesExpanded=0;
+        
+        public void printSolution(Board p, int step){
+            if(step==0){
+                 System.out.println("Step "+ step + ": "  + p.toString());     
+                return;
+            }
+            printSolution(p.getParent(), step-1);
+            System.out.println("Step "+ step + ": "  + p.toString());            
+        }
 	
         public Solver(Board initial) // find a solution to the initial
 	{							 // board (using the A* algorithm)
@@ -41,7 +50,7 @@ public class Solver
 		{
 			nodesExpanded++;
 			Board node = PQ.poll();
-			System.err.println("Pop: "+node);
+			//System.err.println("Pop: "+node);
 			
 			if(node.isGoal())
 			{
@@ -49,6 +58,8 @@ public class Solver
 				System.out.println("Goal: "+node.toString());
 				solution = new ArrayList<Board>();
 				//populate solution arraylist with the board sequence from initial to goal
+                                //task
+                                printSolution(node, minMove);
 				return;
 			}
 			
@@ -57,7 +68,7 @@ public class Solver
 			for(int i=0; i<neighbors.size(); i++)
 			{
 				PQ.add(neighbors.get(i));
-				//System.out.println(neighbors.get(i));
+				System.out.println(neighbors.get(i));
 			}
 
 		}
@@ -102,9 +113,8 @@ public class Solver
 			Board initial = new Board(colors,null,0);
 			System.err.println(initial.toString());
 
- //                       initial.neighbors();
- //                       System.out.println(initial.calcColorsLeft());
-                        
+                     // initial.neighbors();
+                       System.out.println(initial.calcColorsLeft());                        
 			Solver solver = new Solver(initial);
 	
                         System.out.println("Nodes Expanded: "+ solver.nodesExpanded);
