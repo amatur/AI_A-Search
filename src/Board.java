@@ -7,11 +7,12 @@ public class Board {
     //array of colors	
     // (where colors[i][j] = color in
     //row i, column j)
-    public Board(int[][] colors, Board parent) {
+    public Board(int[][] colors, Board parent, int g) {
         //parent null for first board
         this.board = colors;
         this.parent = parent;
         this.n = board.length;
+        this.g = g;
         //printBoard();
         flooded = new boolean[n][n];
         initFlooding();
@@ -63,12 +64,22 @@ public class Board {
     }
     public int heuristic1() // returns the estimated distance from current board to final state using heuristic1
     {
+        for(int i=0; i<6; i++){
+            six[i] = 0;
+        }
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n; j++){
+                if(i==j){
+                    six[board[i][j]]++;
+                }
+            }
+        }
         return 0;
     }
 
     public int heuristic2() // returns the estimated distance from current board to final state using heuristic2
     {
-        return 0;
+        return calcColorsLeft() - 1;
     }
 
     public boolean isGoal() // is this board the goal board? i.e., all color same. 
@@ -83,6 +94,26 @@ public class Board {
     return true;
     }
 
+    public int calcColorsLeft(){
+        int count = 0;
+        int[] temp = new int[6];
+        for (int i=0; i<6; i++)
+            temp[i] = 0;
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n; j++){
+                if(i==j){
+                    temp[board[i][j]-1]++;
+                }
+            }
+        }
+        for (int i=0; i<6; i++){
+            if(temp[i]!=0)
+                count++;
+        }
+        colorsLeft  = count;
+        return colorsLeft;
+    }
+    
     public void floodNeighbors(int row, int col, int color) {
         if (row < n - 1) {
             testFlood(row + 1, col, color);
@@ -108,6 +139,8 @@ public class Board {
             floodNeighbors(row, col, color);
         }
     }
+    
+    
     public void initFlooding(){
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board.length; j++) {
@@ -139,19 +172,31 @@ public class Board {
     {
         ArrayList<Board> ba = new ArrayList<Board>();
         for(int i=1; i<=6; i++){
-            Board childBoard = new Board(getCopy(board), this);
+            Board childBoard = new Board(getCopy(board), this, this.g+1); //neighbor's cost is 1 more
             if(childBoard.getBoard()[0][0]!=i){
                 childBoard.startFlood(i);
             }
             ba.add(childBoard);
             ba.get(i-1).printBoard();
+            BoardGraph bg = new BoardGraph(ba.get(i-1).getBoard());
+            int x = bg.connectedComp();
+            System.out.println(x + "is the # of conn comp");
         }
         return null;
     }
 
+
     public boolean equals(Object y) // does this board equal y?
     {
-        return false;
+        Board other = (Board) y;
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if(other.getBoard()[i][j] != board[i][j]){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public int[][] getCopy(int board[][]) {
@@ -199,4 +244,6 @@ public class Board {
     private int g;
     private int n;
     private int moves; //moves from initial state??
+    private int[] six = new int[6];
+    private int colorsLeft = 6;
 }

@@ -99,10 +99,11 @@ public class Solver
 				for (int j = 0; j < N; j++)
 					colors[i][j] = in.nextInt();
 
-			Board initial = new Board(colors,null);
+			Board initial = new Board(colors,null,0);
 			//System.out.println(initial.toString());
 
                         initial.neighbors();
+                        
                         
 			//Solver solver = new Solver(initial);
 	
