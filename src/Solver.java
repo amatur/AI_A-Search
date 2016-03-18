@@ -68,7 +68,7 @@ public class Solver
 			for(int i=0; i<neighbors.size(); i++)
 			{
 				PQ.add(neighbors.get(i));
-				System.out.println(neighbors.get(i));
+				//System.out.println(neighbors.get(i));
 			}
 
 		}

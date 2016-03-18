@@ -76,22 +76,31 @@ public class Board {
     }
     public int heuristic1() // returns the estimated distance from current board to final state using heuristic1
     {
-        return calcColorsLeft() - 1;
+       // return 0;
+         return calcColorsLeft() - 1;
     }
 
     public int heuristic2() // returns the estimated distance from current board to final state using heuristic2
     {
-        for(int i=0; i<6; i++){
-            six[i] = 0;
-        }
-        for(int i=0; i<n; i++){
-            for(int j=0; j<n; j++){
-                if(i==j){
-                    six[board[i][j]]++;
-                }
-            }
-        }
         return 0;
+//        int count = 0;
+//        try{
+//        int[] temp = new int[6];
+//        for(int i=0; i<6;i++)
+//            temp[i]=0;
+//        for(int i=0; i<n; i++){
+//            for(int j=0; j<n; j++){
+//                if(i==j){
+//                    temp[board[i][j]-1]++;
+//                }
+//            }
+//        }
+//        for(int i=0; i<6;i++)
+//            count+=temp[i];
+//        }catch(Exception e){
+//            return 0;
+//        }
+//        return Math.min(calcColorsLeft()-1, count);
     }
 
     public boolean isGoal() // is this board the goal board? i.e., all color same. 
@@ -107,11 +116,10 @@ public class Board {
     }
 
     public int calcColorsLeft(){
-        if(board[0][0]==0){
-            return 6;
-        }
+        
         int count = 0;
-        int[] temp = new int[6];
+        try{
+//        int[] temp = new int[6];
         for (int i=0; i<6; i++)
             six[i] = 0;
         for(int i=0; i<n; i++){
@@ -124,6 +132,9 @@ public class Board {
         for (int i=0; i<6; i++){
             if(six[i]!=0)
                 count++;
+        }
+        }catch(Exception e){
+            return 6;
         }
         colorsLeft  = count;
         return colorsLeft;
@@ -162,7 +173,8 @@ public class Board {
                 flooded[i][j] = false;
             }
         }
-        flooded[0][0] = true;
+        flooded[0][0]=true;
+        startFlood(board[0][0]);
     }
     
     public void startFlood(int color){
@@ -237,9 +249,9 @@ public class Board {
         return nxtBoard;
     }
     public boolean[][] getCopyFlooded() {
-        boolean[][] nxtBoard = new boolean[board.length][board[0].length];
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
+        boolean[][] nxtBoard = new boolean[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
                 nxtBoard[i][j] = flooded[i][j];
             }
         }
@@ -280,7 +292,6 @@ public class Board {
     private Board parent;
     private int g;
     private int n;
-    private int moves; //moves from initial state??
     private int[] six = new int[6];
     private int colorsLeft;
 }
