@@ -76,8 +76,21 @@ public class Board {
     }
     public int heuristic1() // returns the estimated distance from current board to final state using heuristic1
     {
-       // return 0;
-         return calcColorsLeft() - 1;
+        //return 0;
+        
+        Graph g  = new Graph(getCopy(board));
+        int bfsres =  g.bfs(0);
+        System.err.println(bfsres + " vs " + (calcColorsLeft()-1));
+        
+        
+        BoardGraph bg = new BoardGraph(getCopy(board));
+       int prevConnC =  bg.connectedComp();
+      //return prevConnC;
+        
+        
+     return bfsres;
+        //return Math.max(bfsres ,(calcColorsLeft()-1));
+        //return calcColorsLeft()-1;
     }
 
     public int heuristic2() // returns the estimated distance from current board to final state using heuristic2
@@ -201,8 +214,9 @@ public class Board {
     {
         ArrayList<Board> ba = new ArrayList<Board>();
         int prevColLeft = calcColorsLeft(); //to update six color availability list
-        //BoardGraph bg = new BoardGraph(getCopy(board));
-        //int prevConnC =  bg.connectedComp();
+        
+        BoardGraph bg = new BoardGraph(getCopy(board));
+        int prevConnC =  bg.connectedComp();
         
         for (int i = 0; i < 6; i++) {
             if (six[i] != 0) {
@@ -211,7 +225,11 @@ public class Board {
                 if (childBoard.getBoard()[0][0] != i + 1) {
                     childBoard.startFlood(i + 1);
                 }
-                ba.add(childBoard);
+                BoardGraph bgChild = new BoardGraph(getCopy(childBoard.board));
+                int childConnC =  bgChild.connectedComp();
+                
+                if(childConnC<prevConnC)
+                    ba.add(childBoard);
                 //if (D.p) {
 //                    System.err.println(ba.get(i));
                 //}

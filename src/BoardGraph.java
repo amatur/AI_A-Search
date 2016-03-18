@@ -30,9 +30,9 @@ public class BoardGraph {
     }
 
     public void testFloodCC(int row, int col, int color) {
-        if (flooded[row][col]) {
-            return;
-        }
+        //if (flooded[row][col]) {
+        //    return;
+        //}
         if (board[row][col] == color ) {
             flooded[row][col] = true;
             board[row][col] = -1;
@@ -55,6 +55,7 @@ public class BoardGraph {
         return count;
     }
         
+    
     public void initFlooding(){
         flooded = new boolean[n][n];
         for (int i = 0; i < board.length; i++) {
@@ -62,9 +63,8 @@ public class BoardGraph {
                 flooded[i][j] = false;
             }
         }
-        flooded[0][0] = true;
     }
-    
+   
     private boolean[][] flooded;
     private int[][] board;
     private int n;
