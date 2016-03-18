@@ -1,13 +1,34 @@
 --#
 SIR GIVEN TCS
 #--
+
+________________________________________
 2
 1 1 
 1 1
+0
+# all three admissible:
+1. calculateColorsLeft():
+2. edgeCount():
+3. bfs:
+4. fast()
+Nodes Expanded: 1
+Minimum number of moves = 0
+________________________________________
+
 3
 3 1 2
 1 1 2
 2 2 1
+0
+# all three admissible:
+1. calculateColorsLeft():
+2. edgeCount():
+3. bfs:
+4. fast()
+Nodes Expanded: 4
+Minimum number of moves = 3
+________________________________________
 6
 1 2 3 4 2 3
 3 3 4 5 2 1
@@ -15,18 +36,52 @@ SIR GIVEN TCS
 5 4 3 6 2 1
 3 2 4 3 4 3
 2 3 4 1 5 6
+0
+
+# all three admissible:
+1. calculateColorsLeft():
+        Nodes Expanded: 55
+        Minimum number of moves = 9
+2. edgeCount():
+        Nodes Expanded: 267
+        Minimum number of moves = 9
+3. bfs:
+        Nodes Expanded: 1708
+        Minimum number of moves = 9
+4. fast()
+        Nodes Expanded: 12
+        Minimum number of moves = 11
+________________________________________
 5
 1 2 1 2 1
 2 1 2 1 2
 1 2 1 2 1
 2 1 2 1 2
 1 2 1 2 1
+0
+# all three admissible:
+1. calculateColorsLeft():
+2. edgeCount():
+3. bfs:
+4. fast()
+Nodes Expanded: 9
+Minimum number of moves = 8
+________________________________________
 5
 1 2 3 4 5
 1 2 3 4 5
 1 2 3 4 5
 1 2 3 4 5
 1 2 3 4 5
+0
+# all three admissible:
+1. calculateColorsLeft():
+2. edgeCount():
+3. bfs:
+4. fast()
+Nodes Expanded: 5
+Minimum number of moves = 4
+________________________________________
 5
 1 1 1 3 1
 1 2 2 1 1
@@ -34,37 +89,52 @@ SIR GIVEN TCS
 2 1 1 1 1
 1 1 1 1 1
 0
+________________________________________
 
 
--#
+--#
+CUSTOM TCS
+#--
+
+________________________________________
+7
+1 2 2 3 2 1 5
+2 1 3 1 2 2 4
+3 2 1 2 1 3 3
+1 2 2 3 2 1 2
+2 1 3 1 2 2 1
+3 2 1 2 1 3 4
+1 2 2 3 2 1 5
+0
+#12
+        Nodes Expanded: 68
+        Minimum number of moves = 10
+# all three admissible:
+        Nodes Expanded: 92
+        Minimum number of moves = 10
+1. calculateColorsLeft():
+        Nodes Expanded: 102
+        Minimum number of moves = 10
+2. edgeCount():
+        Nodes Expanded: 24
+        Minimum number of moves = 10
+3. bfs:
+        Nodes Expanded: 173
+        Minimum number of moves = 10
+
+4. fast()
+        Nodes Expanded: 15
+        Minimum number of moves = 13
+
 WITH ERRORS (not flooding initially)
--#
-BEFORE ERROR CORRECTION
-calcColorsLeft()
-7
-1 2 2 3 2 1 5
-2 1 3 1 2 2 4
-3 2 1 2 1 3 3
-1 2 2 3 2 1 2
-2 1 3 1 2 2 1
-3 2 1 2 1 3 4
-1 2 2 3 2 1 5
-0
-Nodes Expanded: 12180
-Minimum number of moves = 10
--
-7
-1 2 2 3 2 1 5
-2 1 3 1 2 2 4
-3 2 1 2 1 3 3
-1 2 2 3 2 1 2
-2 1 3 1 2 2 1
-3 2 1 2 1 3 4
-1 2 2 3 2 1 5
-0
-Nodes Expanded: 37047
-Minimum number of moves = 11
--
+calcColorsLeft() 
+    Nodes Expanded: 37047
+    Minimum number of moves = 11
+BEFORE skipping non progressive check - conn comp 
+    Nodes Expanded: 12180
+    Minimum number of moves = 10
+_________________________________________
+
 6
 2 2 3 2 1 5
 1 3 1 2 2 4
@@ -73,29 +143,38 @@ Minimum number of moves = 11
 1 3 1 2 2 1
 2 2 3 2 1 6
 0
+
 With error:
 Nodes Expanded: 4466
 Minimum number of moves = 10
-
-After correction
+After correction (no filtering)
 Nodes Expanded: 3606
 Minimum number of moves = 10
 
-With connected
-Nodes Expanded: 69
-Minimum number of moves = 10
-
-with both
-80
-one
-84
-Nodes Expanded: 1532
-
 With edge count:
-Nodes Expanded: 734
-Minimum number of moves = 10
+# 2 admissible
+        Nodes Expanded: 82
+        Minimum number of moves = 10
+# all three admissible:
+        Nodes Expanded: 81
+        Minimum number of moves = 10
+1. calculateColorsLeft():
+        Nodes Expanded: 84
+        Minimum number of moves = 10
+2. edgeCount():
+        Nodes Expanded: 734
+        Minimum number of moves = 10
+3. bfs:
+        Nodes Expanded: 1532
+        Minimum number of moves = 10
+4. fast()
+        Nodes Expanded: 17
+        Minimum number of moves = 11
+____________________________________________
+
+
 --#
-FAILED
+TRICKY CASES
 #--
 
 6
@@ -105,22 +184,34 @@ FAILED
 4 3 2 1 4 5
 5 6 1 2 3 6
 6 5 4 3 2 1
-0
-Comment: 
-1. without conn comp
--Failed(Too much time and memory)
+0 
+#FAILED
+1. without conn comp filtering
+- Failed(Too much time and memory)
 2. only dijkstra
--Failed
-3. with conn color left
-Nodes Expanded: 5224
-Minimum number of moves = 13
-4. heuristic of conn comp
-Nodes Expanded: 14
-Minimum number of moves = 13
-5. with edge count
-Nodes Expanded: 1986
-Minimum number of moves = 13
+- Failed
 
+#12
+    Nodes Expanded: 1456
+    Minimum number of moves = 13
+# all three admissible:
+(little slow)
+    Nodes Expanded: 3190
+    Minimum number of moves = 13
+1. calculateColorsLeft():
+    Nodes Expanded: 5224
+    Minimum number of moves = 13
+2. edgeCount():
+    Nodes Expanded: 1986
+Minimum number of moves = 13
+3. bfs:
+    Nodes Expanded: 22890
+    Minimum number of moves = 13
+4. fast()
+    Nodes Expanded: 14
+    Minimum number of moves = 13
+
+_____________________________________________________
 
 4
 1 2 3 4 
@@ -129,18 +220,31 @@ Minimum number of moves = 13
 4 3 2 1
 0
 
-1. bfs:
+1. calculateColorsLeft():
+Nodes Expanded: 40
+Minimum number of moves = 9
+
+2. edgeCount():
+Nodes Expanded: 225
+Minimum number of moves = 9
+
+3. bfs:
 Nodes Expanded: 1465
 Minimum number of moves = 9
 
-2. calculateColorsLeft():
+# all three admissible:
 Nodes Expanded: 40
 Minimum number of moves = 9
 
-3. both  calculateColorsLeft & BFS:
-Nodes Expanded: 40
+4. fast()
+Nodes Expanded: 11
 Minimum number of moves = 9
 
-4. edgeCount():
-Nodes Expanded: 225
-Minimum number of moves = 9
+_______________________________________________________
+
+
+# all three admissible:
+1. calculateColorsLeft():
+2. edgeCount():
+3. bfs:
+4. fast()

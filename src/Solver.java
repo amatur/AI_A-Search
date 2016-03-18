@@ -30,17 +30,22 @@ public class Solver
 	public int nodesExpanded=0;
         
         public void printSolution(Board p, int step){
-            if(step==0){
-                 System.out.println("Step "+ step + ": "  + p.toString());     
+            if(p.getParent()==null){
+                //solution.add(p);
+                //System.out.println("Step "+ step + ": "  + p.toString());     
                 return;
             }
             printSolution(p.getParent(), step-1);
-            System.out.println("Step "+ step + ": "  + p.toString());            
+            solution.add(p.getParent());
+            //System.out.println("Step "+ step + ": "  + p.toString());            
         }
 	
         public Solver(Board initial) // find a solution to the initial
 	{							 // board (using the A* algorithm)
-		PriorityQueue<Board> PQ = new PriorityQueue<>(10, new MyComparator());
+		
+                //create the open list of nodes (PQ), initially containing only our starting node
+                //create the closed list of nodes, initially empty
+                PriorityQueue<Board> PQ = new PriorityQueue<>(10, new MyComparator());
 		
 		//insert initial node into a priority queue PQ
 		PQ.add(initial);
@@ -49,22 +54,25 @@ public class Solver
 		while (!PQ.isEmpty())
 		{
 			nodesExpanded++;
+                        // consider the best node in the open list (the node with the lowest f value)
 			Board node = PQ.poll();
 			//System.err.println("Pop: "+node);
 			
 			if(node.isGoal())
 			{
 				minMove = node.get_g();
-				System.out.println("Goal: "+node.toString());
 				solution = new ArrayList<Board>();
-				//populate solution arraylist with the board sequence from initial to goal
+                                //System.out.println("Goal: "+node.toString());
+			
+                                //populate solution arraylist with the board sequence from initial to goal
                                 //task
                                 printSolution(node, minMove);
-				return;
+				solution.add(node);
+                                return;
 			}
-			
-			ArrayList<Board> neighbors = node.neighbors();
-			
+                        
+                        //if it is not goal, move the current node to the closed list and consider all of its neighbors
+			ArrayList<Board> neighbors = node.neighbors();			
 			for(int i=0; i<neighbors.size(); i++)
 			{
 				PQ.add(neighbors.get(i));
@@ -111,15 +119,17 @@ public class Solver
 					colors[i][j] = in.nextInt();
 
 			Board initial = new Board(colors,null,0);
-			System.err.println(initial.toString());
-
-                     // initial.neighbors();
-                       System.out.println(initial.calcColorsLeft());                        
-			Solver solver = new Solver(initial);
+			
+                       Solver solver = new Solver(initial);
 	
                         System.out.println("Nodes Expanded: "+ solver.nodesExpanded);
-			System.out.println("Minimum number of moves = " + solver.moves());
+			System.out.println("Number of moves: " + solver.moves());
+                        
 			ArrayList<Board> solution = solver.solution();
+                        
+                        for(int i=1; i<solution.size(); i++){
+                            System.out.println(solution.get(i).getBoard()[0][0]);
+                        }
 			for (int i=0;i<solution.size();i++)
 				System.out.println(solution.get(i));
 			//for bonus - show_result_in_gui(solution);
@@ -127,38 +137,3 @@ public class Solver
 	}
 	
 }
-
-//create the open list of nodes, initially containing only our starting node
-//create the closed list of nodes, initially empty
-//
-//while (we have not reached our goal) 
-//{
-//        consider the best node in the open list (the node with the lowest f value)
-//
-//        if (this node is the goal) 
-//        {
-//                then we're done
-//        }
-//        else 
-//        {
-//                move the current node to the closed list and consider all of its neighbors
-//
-//                for (each neighbor) 
-//                {
-//                        if (this neighbor is in the closed list and our current g value is lower) 
-//                        {
-//                                update the neighbor with the new, lower, g value 
-//                                change the neighbor's parent to our current node
-//                        }
-//                        else if (this neighbor is in the open list and our current g value is lower) 
-//                        {
-//                                update the neighbor with the new, lower, g value 
-//                                change the neighbor's parent to our current node
-//                        }
-//                        else this neighbor is not in either the open or closed list 
-//                        {
-//                                add the neighbor to the open list and set its g value
-//                        }
-//                }
-//        }
-//}

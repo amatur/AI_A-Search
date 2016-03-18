@@ -10,4 +10,9 @@
  */
 public class D {
     public static boolean p = false;
+    public static boolean testFlooding = false;
+    public static boolean testGraphIsCorrect = false;
+        public static boolean testGraphAdjList = false;
+    public static boolean etc = false;
+    
 }
