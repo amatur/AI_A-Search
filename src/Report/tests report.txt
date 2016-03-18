@@ -91,6 +91,9 @@ one
 84
 Nodes Expanded: 1532
 
+With edge count:
+Nodes Expanded: 734
+Minimum number of moves = 10
 --#
 FAILED
 #--
@@ -104,17 +107,19 @@ FAILED
 6 5 4 3 2 1
 0
 Comment: 
-without conn comp
+1. without conn comp
 -Failed(Too much time and memory)
-only dijkstra
+2. only dijkstra
 -Failed
-with conn color left
+3. with conn color left
 Nodes Expanded: 5224
 Minimum number of moves = 13
--heuristic of conn comp
+4. heuristic of conn comp
 Nodes Expanded: 14
 Minimum number of moves = 13
-
+5. with edge count
+Nodes Expanded: 1986
+Minimum number of moves = 13
 
 
 4
@@ -123,15 +128,19 @@ Minimum number of moves = 13
 5 6 1 6
 4 3 2 1
 0
-calcColo:
-Nodes Expanded: 40
-Minimum number of moves = 9
 
-bfs:
+1. bfs:
 Nodes Expanded: 1465
 Minimum number of moves = 9
 
-both:
+2. calculateColorsLeft():
 Nodes Expanded: 40
 Minimum number of moves = 9
 
+3. both  calculateColorsLeft & BFS:
+Nodes Expanded: 40
+Minimum number of moves = 9
+
+4. edgeCount():
+Nodes Expanded: 225
+Minimum number of moves = 9

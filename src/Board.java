@@ -74,46 +74,30 @@ public class Board {
     {
             return g+heuristic1();
     }
-    public int heuristic1() // returns the estimated distance from current board to final state using heuristic1
+    public int heuristic2() // returns the estimated distance from current board to final state using heuristic1
     {
         //return 0;
         
         Graph g  = new Graph(getCopy(board));
         int bfsres =  g.bfs(0);
-        System.err.println(bfsres + " vs " + (calcColorsLeft()-1));
-        
+        System.err.println(bfsres + " vs " + (calcColorsLeft()-1) + " vs " + g.heur());
+    
         
         BoardGraph bg = new BoardGraph(getCopy(board));
        int prevConnC =  bg.connectedComp();
-      //return prevConnC;
+      return prevConnC;
         
         
-     return bfsres;
+     //return bfsres;
         //return Math.max(bfsres ,(calcColorsLeft()-1));
         //return calcColorsLeft()-1;
     }
 
-    public int heuristic2() // returns the estimated distance from current board to final state using heuristic2
-    {
-        return 0;
-//        int count = 0;
-//        try{
-//        int[] temp = new int[6];
-//        for(int i=0; i<6;i++)
-//            temp[i]=0;
-//        for(int i=0; i<n; i++){
-//            for(int j=0; j<n; j++){
-//                if(i==j){
-//                    temp[board[i][j]-1]++;
-//                }
-//            }
-//        }
-//        for(int i=0; i<6;i++)
-//            count+=temp[i];
-//        }catch(Exception e){
-//            return 0;
-//        }
-//        return Math.min(calcColorsLeft()-1, count);
+    //Edge Count
+    public int heuristic1() // returns the estimated distance from current board to final state using heuristic2
+    {        
+        Graph g  = new Graph(getCopy(board));
+        return g.heur();
     }
 
     public boolean isGoal() // is this board the goal board? i.e., all color same. 
