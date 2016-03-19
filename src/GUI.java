@@ -10,6 +10,7 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -29,9 +30,10 @@ import javax.swing.border.EtchedBorder;
 
 public class GUI extends JFrame {
 
+    private JFrame jf = this;
     private ArrayList<Board> solution;
     private Grid grid;
-    public int solutionCounter = 0;
+    public int solutionCounter = 1;
 
     public GUI(String name, ArrayList<Board> solution) {
         setTitle(name);
@@ -39,9 +41,7 @@ public class GUI extends JFrame {
         this.setLayout(new BorderLayout());
         grid = new Grid(solution.get(0).getBoard().length);
         add(grid);
-        grid.setLayout(new FlowLayout());
-        
-        grid.add(new JButton("Start"));
+
         //add(new JLabel("BOARD"));
 //		this.setFocusable(true);
     }
@@ -51,33 +51,60 @@ public class GUI extends JFrame {
         private Color c = Color.BLACK;
         private Timer newTimer;
         private int n;
+        private JButton jButton1;
         private ArrayList<Cell> fillCells;
 
         public Grid(int n) {
             this.n = n;
+
             fillCells = new ArrayList<>(n * n);
-            newTimer = new Timer(1000, paintTimerAction);
-            newTimer.start();
+            setLayout(new FlowLayout());
+            jButton1 = new JButton("Start Solving");
+            add(jButton1);
+            int[][] board = solution.get(0).getBoard();
+            for (int i = 0; i < board.length; i++) {
+                for (int j = 0; j < board.length; j++) {
+                    fillCell(i, j, board[i][j]);
+                }
+            }
+
+            //newTimer.start();
+            repaint();
+
+            newTimer = new Timer(500, paintTimerAction);
+            jButton1.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton1ActionPerformed(evt);
+                }
+            });
+        }
+
+        private void jButton1ActionPerformed(ActionEvent evt) {
+            if(jButton1.getText().equals("Done!")){
+                //System.exit(0);
+                jf.dispose();
+            }else if (newTimer.isRunning()) {
+                jButton1.setText("Resume");
+                newTimer.stop();
+            } else {
+                jButton1.setText("Pause");
+                newTimer.start();
+            }
+            
+            //JOptionPane.showMessageDialog(null, "Started");
         }
 
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             for (Cell fillCell : fillCells) {
-                int cellX = 10 + (fillCell.x *40);
-                int cellY = 10 + (fillCell.y *40);
+                int cellX = 50 + n * 2 + (fillCell.x * 40);
+                int cellY = 40 + n * 2 + (fillCell.y * 40);
                 g.setColor(fillCell.c);
                 g.fillRect(cellX, cellY, 40, 40);
-               g.setColor(Color.BLACK);
-               g.drawRect(cellX, cellY, 40, 40);
+                g.setColor(Color.BLACK);
+                g.drawRect(cellX, cellY, 40, 40);
             }
-
-//            for (int i = 10; i <= 800; i += 10) {
-//                g.drawLine(i, 10, i, 510);
-//            }
-//            for (int i = 10; i <= 500; i += 10) {
-//                g.drawLine(10, i, 810, i);
-//            }
         }
 
         public void fillCell(int x, int y, int col) {
@@ -85,14 +112,8 @@ public class GUI extends JFrame {
             repaint();
         }
 
-        Action paintTimerAction = new AbstractAction() { // functionality of our timer:
+        Action paintTimerAction = new AbstractAction() { // functionality of our timer
             public void actionPerformed(ActionEvent e) {
-			// set X and Y co-ordinates that will then be fetched when drawing
-                // the ball Image on the JPanel.
-                //currentBall.setX(currentBall.getX() + 5);
-                //currentBall.setY(currentBall.getY() + 5);
-                //time agaile increment solution counter
-
                 if (solutionCounter < solution.size()) {
                     int[][] board = solution.get(solutionCounter).getBoard();
                     for (int i = 0; i < board.length; i++) {
@@ -102,7 +123,10 @@ public class GUI extends JFrame {
                     }
                     solutionCounter++;
                 }
-                //newTimer.start();
+                if(solutionCounter == solution.size()){
+                    newTimer.stop();
+                    jButton1.setText("Done!");
+                }
                 repaint();
             }
         };
@@ -134,37 +158,3 @@ class Cell extends Point {
         }
     }
 }
-
-//
-//class MainPanel extends JPanel { // inherit JPanel
-//
-//	// Constructor:-----------------------------------------------------
-//	public MainPanel() {
-////		setDoubleBuffered(true);
-//		new Timer(15, paintTimer).start();
-//	}
-//
-//	// ----------------------------------------------------------------
-//
-//	public void paint(Graphics g) {
-//		super.paint(g);
-//		Graphics2D g2d = (Graphics2D) g;
-//		//g2d.drawImage(), currentBall.getX(), currentBall.getY(), this); //Draws the ball Image at the correct X and Y co-ordinates.									
-//		g2d.drawRect(0,0, 40, 40);
-//                
-//                //Toolkit.getDefaultToolkit().sync(); // necessary for linux users to draw  and animate image correctly
-//		g.dispose();
-//
-//	}
-//
-//	Action paintTimer = new AbstractAction() { // functionality of our timer:
-//		public void actionPerformed(ActionEvent e) {
-//			// set X and Y co-ordinates that will then be fetched when drawing
-//			// the ball Image on the JPanel.
-//			//currentBall.setX(currentBall.getX() + 5);
-//			//currentBall.setY(currentBall.getY() + 5);
-//			//time agaile increment solution counter
-//                        repaint();
-//		}
-//	};
-//}

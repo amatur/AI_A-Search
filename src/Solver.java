@@ -138,13 +138,7 @@ public class Solver {
                 window.setSize(100+solution.get(0).getBoard().length*50, 100+solution.get(0).getBoard().length*50);
                 window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 window.setVisible(true);
-                
-//            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//            frame.pack();
-//            frame.setResizable(false);
-//            frame.setVisible(true);
-//            frame.setLocationRelativeTo(null);
-            // frame.solve();
+                window.setResizable(false);
         }
     }
 
