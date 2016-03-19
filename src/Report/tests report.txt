@@ -303,7 +303,7 @@ ___________________________________________________________________
         Nodes Expanded: 62991
         Number of moves: 17
 3. bfs:
-        
+        FAILED
 4. fast()
         Nodes Expanded: 21
         Number of moves: 20
