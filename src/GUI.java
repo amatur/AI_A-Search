@@ -3,30 +3,15 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridLayout;
-import java.awt.List;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JToolBar;
-import javax.swing.KeyStroke;
 import javax.swing.Timer;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.EtchedBorder;
 
 public class GUI extends JFrame {
 
@@ -41,9 +26,6 @@ public class GUI extends JFrame {
         this.setLayout(new BorderLayout());
         grid = new Grid(solution.get(0).getBoard().length);
         add(grid);
-
-        //add(new JLabel("BOARD"));
-//		this.setFocusable(true);
     }
 
     class Grid extends JPanel {
@@ -56,7 +38,6 @@ public class GUI extends JFrame {
 
         public Grid(int n) {
             this.n = n;
-
             fillCells = new ArrayList<>(n * n);
             setLayout(new FlowLayout());
             jButton1 = new JButton("Start Solving");
@@ -67,10 +48,7 @@ public class GUI extends JFrame {
                     fillCell(i, j, board[i][j]);
                 }
             }
-
-            //newTimer.start();
             repaint();
-
             newTimer = new Timer(500, paintTimerAction);
             jButton1.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -80,17 +58,17 @@ public class GUI extends JFrame {
         }
 
         private void jButton1ActionPerformed(ActionEvent evt) {
-            if(jButton1.getText().equals("Done!")){
+            if (jButton1.getText().equals("Done!")) {
                 //System.exit(0);
                 jf.dispose();
-            }else if (newTimer.isRunning()) {
+            } else if (newTimer.isRunning()) {
                 jButton1.setText("Resume");
                 newTimer.stop();
             } else {
                 jButton1.setText("Pause");
                 newTimer.start();
             }
-            
+
             //JOptionPane.showMessageDialog(null, "Started");
         }
 
@@ -103,12 +81,12 @@ public class GUI extends JFrame {
                 g.setColor(fillCell.c);
                 g.fillRect(cellX, cellY, 40, 40);
                 g.setColor(Color.BLACK);
-                g.drawRect(cellX, cellY, 40, 40);
+                //g.drawRect(cellX, cellY, 40, 40);
             }
         }
 
         public void fillCell(int x, int y, int col) {
-            fillCells.add(new Cell(x, y, col));
+            fillCells.add(new Cell(y, x, col));
             repaint();
         }
 
@@ -123,7 +101,7 @@ public class GUI extends JFrame {
                     }
                     solutionCounter++;
                 }
-                if(solutionCounter == solution.size()){
+                if (solutionCounter == solution.size()) {
                     newTimer.stop();
                     jButton1.setText("Done!");
                 }
@@ -134,7 +112,9 @@ public class GUI extends JFrame {
 }
 
 class Cell extends Point {
+
     public Color c;
+
     Cell(int x, int y, int color) {
         this.x = x;
         this.y = y;
