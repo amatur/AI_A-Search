@@ -65,7 +65,7 @@ public class Board {
     }
 
     public int f() {
-        return g + heuristic4();
+        return g + heuristic12();
     }
 
     /***
